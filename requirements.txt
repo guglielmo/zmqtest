@@ -1,0 +1,2 @@
+fake-factory==0.2
+pyzmq==2.2.0.1

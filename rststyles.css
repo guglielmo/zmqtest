@@ -1,0 +1,20 @@
+/*
+:Author: Your Name
+:Contact: Your Email Address
+:Copyright: This stylesheet has been placed in the public domain.
+
+Stylesheet for use with Docutils.  [Optionally place a more
+detailed description here.]
+*/
+
+@import url(html4css1.css);
+
+/* Your customizations go here.  For example: */
+body {
+    font-family: sans-serif;
+}
+
+dl.docutils dt {
+    font-weight: bold
+}
+
