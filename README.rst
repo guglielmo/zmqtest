@@ -46,6 +46,35 @@ reqrep_client.py
     message = socket.recv()
 
 
+.. _`Executing Request-Response`:
+
+Execution
+=========
+
+You can use tmux_, and split your screen into 2 columns, so that you can see the processes simultaneously working.
+
+.. code-block:: bash
+
+    apt-get install tmux (or equivalent)
+    tmux
+    workon zmqtest
+    CTRL+B, | #splits the scrin vertically
+    workon zmqtest
+    CTRL+B, Q, [0,1] # to move between the columns
+
+Run the scripts: the server first, then the client, each in one column.
+
+.. code-block:: python
+
+    python reqresp_server.py
+    python reqresp_client.py
+
+You'll see the server waiting messages. When the client starts, it will send 10 *Hello* requests, wait for
+a response message back from the server (*World*), display the responses.
+The server will display the requests, as it receives them.
+
+.. _tmux: http://tmux.sourceforge.net/
+
 
 .. _`Publish and Subscribe`:
 
@@ -79,12 +108,14 @@ Publish - Subscribe example
 
 
 pub_server.py
-  Listens on a ``zmq.PUB`` socket on port 5556.
-  Continuously spits out random temperature data relative to 3 different zipcodes (topics)::
+  Connects to a ``zmq.PUB`` socket on port 5556.
+  Continuously spits out random temperatures relative to 3 different zipcodes (topics)::
 
-    zipcode = random.randrange(10000,10002)
+    zipcode = random.randrange(10000,10002,10003,10004)
     messagedata = random.randrange(1,215) - 80
     socket.send("%d %d" % (zipcode, messagedata))
+
+  Topic and message are separated by a space (convention)
 
 sub_client.py
   Connects to a ``zmq.SUB`` socket on port 5556. Sets a subscription to one of the three zipcodes (topic).
@@ -92,12 +123,26 @@ sub_client.py
 
     socket.setsockopt(zmq.SUBSCRIBE, "10001")
     total_value = 0
-    for update_nbr in range (5):
+    update_nbr = 5
+    for t in range (update_nbr):
         string = socket.recv()
         topic, messagedata = string.split()
         total_value += int(messagedata)
         print topic, messagedata
 
+
+Execution
+=========
+Have the screen split in two columns as described in `Executing Request-Response`_,
+Run the scripts: the server first, then the client, each in one column.
+
+.. code-block:: python
+
+    python pub_server.py
+    python sub_client.py
+
+You'll see the server broadcasting temperatures for all 3 ZIP codes,
+while the client, once started, will receive 5 temperature for the 10001 ZIP code, average them and stop.
 
 .. _`Voisietequi prototype`:
 
@@ -191,7 +236,18 @@ computer.py
 
 .. _poller: https://learning-0mq-with-pyzmq.readthedocs.org/en/latest/pyzmq/multisocket/zmqpoller.html
 
+Execution
+=========
 
+Run the scripts: the computer, first, then the configure
+
+.. code-block:: python
+
+    python pub_server.py
+    python sub_client.py
+
+You'll see the server broadcasting temperatures for all 3 ZIP codes,
+while the client, once started, will receive 5 temperature for the 10001 ZIP code, average them and stop.
 
 Saving the results
 ==================
