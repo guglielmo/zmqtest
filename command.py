@@ -14,10 +14,18 @@ def send_command(pub_socket):
     pub_socket.close()
 
 
-def cmd_reply_handler(results_receiver, poller):
+def cmd_reply_handler():
+    print "Listening to response from configured computers"
+
     context = zmq.Context()
 
-    print "Listening to response from configured computers"
+    results_receiver = context.socket(zmq.PULL)
+    results_receiver.bind("tcp://*:5557")
+    results_receiver.RCVTIMEO = 1000 #sets timeout
+
+    poller = zmq.Poller()
+    poller.register(results_receiver, zmq.POLLIN)
+
     should_continue = True
     while should_continue:
         # check if there are any results to receive
@@ -25,9 +33,10 @@ def cmd_reply_handler(results_receiver, poller):
         if results_receiver in socks and socks[results_receiver] == zmq.POLLIN:
             message = results_receiver.recv()
             print "Computer responded: %s" % message
+            print "Will continue"
         else:
             should_continue = False
-
+            print "Will stop"
 
 if __name__ == "__main__":
 
@@ -39,12 +48,6 @@ if __name__ == "__main__":
     pub_socket = context.socket(zmq.PUB)
     pub_socket.bind("tcp://*:5556")
 
-    results_receiver = context.socket(zmq.PULL)
-    results_receiver.bind("tcp://*:5557")
-    results_receiver.RCVTIMEO = 1000 #sets timeout
-
-    poller = zmq.Poller()
-    poller.register(results_receiver, zmq.POLLIN)
 
     #
     # wait for connections (handshake, ...)
@@ -54,4 +57,10 @@ if __name__ == "__main__":
     #
     # send command and listens for replies
     send_command(pub_socket)
-    Process(target=cmd_reply_handler, args=(results_receiver, poller)).start()
+
+    p = Process(target=cmd_reply_handler)
+    p.start()
+    p.join()
+
+
+

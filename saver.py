@@ -21,4 +21,6 @@ def req_handler():
 
 
 if __name__ == "__main__":
-    Process(target=req_handler).start()
+    p = Process(target=req_handler)
+    p.start()
+    p.join()
