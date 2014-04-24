@@ -58,7 +58,7 @@ You can use tmux_, and split your screen into 2 columns, so that you can see the
     apt-get install tmux (or equivalent)
     tmux
     workon zmqtest
-    CTRL+B, | #splits the scrin vertically
+    CTRL+B, | #splits the screen vertically
     workon zmqtest
     CTRL+B, Q, [0,1] # to move between the columns
 
