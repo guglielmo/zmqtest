@@ -288,9 +288,8 @@ Execution
 
 The following test will run two computers,
 which will accept configuration commands, and simultaneously
-send a stream of (fake) results back to the server. All in one screen,
-if you have tmux installed.
-
+send a stream of one fake result per second each, back to the server.
+All in one screen, if you have tmux installed.
 
 
 * Subdivide your screen into 2 main parts with tmux ``CTRL+B,|``;
@@ -307,6 +306,12 @@ if you have tmux installed.
 * go into the second computer (``CTRL+B,Q,2``) and kill the process (``CTRL+C``) (see how the stream of messages in the left screen stops)
 * go into the server screen (``CTRL+B,Q,0``) anc kill the server to end the test
 
+
+An even more interesting test, that shows how messages are queued, almost magically, without
+a message broker infrastructure:
+
+* start the two computers and wait 15 seconds, then kill both of them
+* now start the saver, and you'll see the stream of all queued results appearing (out of almost nowhere)
 
 
 .. _`Fake mail form`:

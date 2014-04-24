@@ -23,16 +23,19 @@ def main_task_handler():
     save_sender = context.socket(zmq.PUSH)
     save_sender.connect(SAVE_PUSH_QUEUE_ADDR)
 
+    c = 0
     while (True):
         # simulate some very complex computation
         (x, y) = (random.gauss(0, 1), random.gauss(0, 1))
-        result = { 'x' : x, 'y': y}
+        result = { 'unit': computer_id, 'counter': c, 'x' : x, 'y': y}
 
         # send message to sender
         save_sender.send_json(result)
 
         # take it easy
         time.sleep(1)
+
+        c += 1
 
 def cmd_handler():
     """
@@ -52,7 +55,7 @@ def cmd_handler():
 
     # main loop
     while True:
-        print "Aye sir, ready for your commands ..."
+        print "Aye sir, unit {0} ready for your commands ...".format(computer_id)
         # wait for a command
         string = cmd_socket.recv()
 
@@ -61,11 +64,11 @@ def cmd_handler():
 
         # send reply to server
         print "Sending reply to server"
-        computer_id = random.randrange(1,10)
-        reply = { 'computer' : computer_id, 'status' : 'configured'}
+        reply = { 'unit' : computer_id, 'status' : 'configured'}
         reply_sender.send_json(reply)
 
 
 if __name__ == "__main__":
+    computer_id = random.randrange(1,10000)
     Process(target=cmd_handler).start()
     Process(target=main_task_handler).start()
