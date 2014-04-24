@@ -51,7 +51,7 @@ reqrep_client.py
 Execution
 =========
 
-You can use tmux_, and split your screen into 2 columns, so that you can see the processes simultaneously working.
+You should use tmux_, and split your screen into 2 columns, so that you can see the processes simultaneously working.
 
 .. code-block:: bash
 
@@ -286,7 +286,12 @@ saver.py
 Execution
 =========
 
-Run the scripts:
+The following test will run two computers,
+which will accept configuration commands, and simultaneously
+send a stream of (fake) results back to the server. All in one screen,
+if you have tmux installed.
+
+
 
 * Subdivide your screen into 2 main parts with tmux ``CTRL+B,|``;
 * ``workon zmqtest`` on the left screen;
