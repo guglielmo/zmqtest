@@ -236,18 +236,6 @@ computer.py
 
 .. _poller: https://learning-0mq-with-pyzmq.readthedocs.org/en/latest/pyzmq/multisocket/zmqpoller.html
 
-Execution
-=========
-
-Run the scripts: the computer, first, then the configure
-
-.. code-block:: python
-
-    python pub_server.py
-    python sub_client.py
-
-You'll see the server broadcasting temperatures for all 3 ZIP codes,
-while the client, once started, will receive 5 temperature for the 10001 ZIP code, average them and stop.
 
 Saving the results
 ==================
@@ -293,6 +281,20 @@ saver.py
         if req_receiver in socks and socks[req_receiver] == zmq.POLLIN:
             message = req_receiver.recv()
             print "Computer requested a save: %s" % message
+
+
+Execution
+=========
+
+Run the scripts: the computer first, then the configure command launcher.
+Launch the server to see the computer sending results as a continuous stream.
+
+
+.. code-block:: python
+
+    python command.py
+    python computer.py
+    python saver.py
 
 
 
