@@ -286,8 +286,21 @@ saver.py
 Execution
 =========
 
-Run the scripts: the computer first, then the configure command launcher.
-Launch the server to see the computer sending results as a continuous stream.
+Run the scripts:
+
+* Subdivide your screen into 2 main parts with tmux ``CTRL+B,|``;
+* ``workon zmqtest`` on the left screen;
+* go into the right screen with ``CTRL+B,Q,1``;
+* Subdivide the screen vertically with ``CTRL+B,"``;
+* ``workon zmqtest``, then ``python computer.py`` on the top screen
+* go into the lower screen with ``CTRL+B,Q,2``;
+* ``workon zmqtest``, then ``python computer.py`` on the bottom screen
+* return in the left screen with ``CTRL+B,Q,0``;
+* launch ``python command.py`` (see how the computer process gets the fake config messages, and the command process gets the confirmation messages)
+* launch ``python server.py`` (see how the command process gets a stream of fake results from the computers)
+* go into the first computer (``CTRL+B,Q,1``) and kill the process (``CTRL+C``) (see how the stream of messages in the left screen slows down)
+* go into the second computer (``CTRL+B,Q,2``) and kill the process (``CTRL+C``) (see how the stream of messages in the left screen stops)
+* go into the server screen (``CTRL+B,Q,0``) anc kill the server to end the test
 
 
 .. code-block:: python
