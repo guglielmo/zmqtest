@@ -308,13 +308,6 @@ if you have tmux installed.
 * go into the server screen (``CTRL+B,Q,0``) anc kill the server to end the test
 
 
-.. code-block:: python
-
-    python command.py
-    python computer.py
-    python saver.py
-
-
 
 .. _`Fake mail form`:
 
